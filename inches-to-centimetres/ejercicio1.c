@@ -33,20 +33,30 @@ IMPORTANTE: Una pulgada equivale a 2.54 centímetros.
 int main(int argc, char * argv[]){
 	
 	float cantidad;
-	char palabraOrigen[100];
-	char palabraDestino[100];
+	char palabraOrigen[100], palabraDestino[100];	
 	
+	printf("Por favor, introduzca el valor numerico a convertir, palabra de origen y palabra de destino: \n");
+	scanf("%f %s %s", &cantidad, palabraOrigen, palabraDestino);
 	
-	printf("Por favor, introduzca el valor númerico a convertir, palabra de origen y palabra de destino: ");
-	scanf("%f", &cantidad);
-	scanf("%s", &palabraOrigen);
-	scanf("%s", &palabraDestino);	
 
-    printf("Cantidad: %.2f\n", cantidad);  // Mostramos el valor numérico
+	
+	if (getchar() != '\n') { //Si hay salto de linea (3 valores) no entra
+        printf("ERROR: Introduzca un numero valido de entidades\n");
+		return 1;
+    }
+	
+	for(int i = 0; i < argc; i++){
+		if(argv[2] != "inch" || argv[3] != "cm"){
+			printf("ERROR: segunda o tercera palabra erronea\n");
+		}
+		return 1;
+	}
+
+    printf("Cantidad: %f\n", cantidad);  // Mostramos el valor numérico
     printf("Palabra de origen: %s\n", palabraOrigen);  // Mostramos la palabra de origen
     printf("Palabra de destino: %s\n", palabraDestino); // Mostramos la palabra de destino
-    
-    return 0;
+	
+	return 0;
 }
 
 
