@@ -27,3 +27,39 @@ operaciones pedidas.
 IMPORTANTE: Una pulgada equivale a 2.54 centímetros.
 
 */
+
+#include <stdio.h>
+
+int main(int argc, char * argv[]){
+	
+	float cantidad;
+	char palabraOrigen[100];
+	char palabraDestino[100];
+	
+	
+	printf("Por favor, introduzca el valor númerico a convertir, palabra de origen y palabra de destino: ");
+	scanf("%f", &cantidad);
+	scanf("%s", &palabraOrigen);
+	scanf("%s", &palabraDestino);	
+
+    printf("Cantidad: %.2f\n", cantidad);  // Mostramos el valor numérico
+    printf("Palabra de origen: %s\n", palabraOrigen);  // Mostramos la palabra de origen
+    printf("Palabra de destino: %s\n", palabraDestino); // Mostramos la palabra de destino
+    
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
