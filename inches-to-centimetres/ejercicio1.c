@@ -31,39 +31,66 @@ IMPORTANTE: Una pulgada equivale a 2.54 centímetros.
 #include <stdio.h>
 #include <string.h>
 
-int main(int argc, char * argv[]){
+
+
+typedef struct {
 	
 	float cantidad;
-	char palabraOrigen[100], palabraDestino[100];	
+	char palabraOrigen[100];
+	char palabraDestino[100];
+
+} ConversionInfo_t;
+
+
+double convertir_longitud(ConversionInfo_t conversion){
 	
+	float inch = 2.54;
+	float cm;
+	float resultadoFinal = 0;
+	
+	if(strcmp(conversion.palabraOrigen,"inch") == 0){
+		
+		resultadoFinal = conversion.cantidad * inch;
+		printf("%.2f inches son %.2f cm", conversion.cantidad, resultadoFinal);
+	
+	}else{
+	
+		resultadoFinal = conversion.cantidad / inch;
+		printf("%.2f cm son %.2f inches", conversion.cantidad, resultadoFinal);
+	
+	}
+	
+	return resultadoFinal;
+}
+
+
+
+int main(int argc, char * argv[]){
+	
+	ConversionInfo_t conversion;
+		
 	printf("Por favor, introduzca el valor numerico a convertir, palabra de origen y palabra de destino: \n");
-	scanf("%f %s %s", &cantidad, palabraOrigen, palabraDestino);
+	scanf("%f %s %s", &conversion.cantidad, conversion.palabraOrigen, conversion.palabraDestino);
 	
 
-	
 	if (getchar() != '\n') { //Si hay salto de linea (3 valores) no entra
         
 		printf("ERROR: Introduzca un numero valido de entidades\n");
 		return 1;
-    
 	}
 	
-	
-	
-	if ((strcmp(palabraOrigen, "inch") == 0 && strcmp(palabraDestino, "cm") == 0) ||
-        (strcmp(palabraOrigen, "cm") == 0 && strcmp(palabraDestino, "inch") == 0)) {
+	//Ver posibilidad de implementar ENUM
+	if ((strcmp(conversion.palabraOrigen, "inch") == 0 && strcmp(conversion.palabraDestino, "cm") == 0) ||
+        (strcmp(conversion.palabraOrigen, "cm") == 0 && strcmp(conversion.palabraDestino, "inch") == 0)) {
 			
-		printf("TODO OK\n");
-	
-	}else{
+		convertir_longitud(conversion);
 		
+	}else{
+		//Ver posibilidad de funcion de error
 		printf("ERROR: segunda o tercera palabra erronea\n");
 		return 1;
 	}
 
-    printf("Cantidad: %f\n", cantidad);  // Mostramos el valor numérico
-    printf("Palabra de origen: %s\n", palabraOrigen);  // Mostramos la palabra de origen
-    printf("Palabra de destino: %s\n", palabraDestino); // Mostramos la palabra de destino
 	
 	return 0;
 }
