@@ -29,6 +29,7 @@ IMPORTANTE: Una pulgada equivale a 2.54 centímetros.
 */
 
 #include <stdio.h>
+#include <string.h>
 
 int main(int argc, char * argv[]){
 	
@@ -41,14 +42,22 @@ int main(int argc, char * argv[]){
 
 	
 	if (getchar() != '\n') { //Si hay salto de linea (3 valores) no entra
-        printf("ERROR: Introduzca un numero valido de entidades\n");
+        
+		printf("ERROR: Introduzca un numero valido de entidades\n");
 		return 1;
-    }
+    
+	}
 	
-	for(int i = 0; i < argc; i++){
-		if(argv[2] != "inch" || argv[3] != "cm"){
-			printf("ERROR: segunda o tercera palabra erronea\n");
-		}
+	
+	
+	if ((strcmp(palabraOrigen, "inch") == 0 && strcmp(palabraDestino, "cm") == 0) ||
+        (strcmp(palabraOrigen, "cm") == 0 && strcmp(palabraDestino, "inch") == 0)) {
+			
+		printf("TODO OK\n");
+	
+	}else{
+		
+		printf("ERROR: segunda o tercera palabra erronea\n");
 		return 1;
 	}
 
