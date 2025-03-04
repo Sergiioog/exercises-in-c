@@ -28,3 +28,52 @@ La batalla se desarrollará por turnos hasta que uno de los gladiadores quede si
 Al finalizar la batalla, el programa deberá mostrar el resultado y mostrar los datos del ganador de la batalla
 
 */
+
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+	
+	char nombre[10];
+	char arma[20];
+	int fuerza;
+	int salud;
+	
+} Gladiador1_t;
+
+typedef struct {
+	
+	char nombre[10];
+	char arma[20];
+	int fuerza;
+	int salud;
+	
+} Gladiador2_t;
+
+int main(int argc, char * argv[]){
+	
+	
+	Gladiador1_t gladiador1;
+	Gladiador2_t gladiador2;
+	
+    printf("Introduzca el nombre del primer gladiador (10char): \n");
+    scanf("%s", gladiador1.nombre);  
+
+    printf("Introduzca el nombre del segundo gladiador (10char): ");
+    scanf("%s", gladiador2.nombre);  
+	
+
+    if (strlen(gladiador1.nombre) > 9) {
+        printf("ERROR: El nombre del gladiador 1 excede el tamaño permitido\n");
+        return 1;
+    } else if (strlen(gladiador2.nombre) > 9) {
+        printf("ERROR: El nombre del gladiador 2 excede el tamaño permitido\n");
+        return 1;
+    } else {
+        printf("Los gladiadores elegidos son: %s y %s\n", gladiador1.nombre, gladiador2.nombre);
+    }
+	
+
+	
+	return 0;
+}
