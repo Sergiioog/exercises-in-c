@@ -31,6 +31,7 @@ Al finalizar la batalla, el programa deberá mostrar el resultado y mostrar los 
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct {
 	
@@ -41,60 +42,88 @@ typedef struct {
 	
 } Gladiador_t;
 
-int main(int argc, char * argv[]){
+typedef enum {
+	ESPADA,
+	LANZA
+} Weapon_e;
+
+int check_is_validName(char * palabra); 
+
+int check_is_validName(char * palabra){
 	
+	for(int i = 0; i < strlen(palabra); i++){
+		if(!isalpha(palabra[i])){
+			printf("ERROR: La palabra %s no es valida, cambiela por favor.", palabra); 
+			return 1;
+		}
+	}
+	return 0;
+}
+
+
+int main(int argc, char * argv[]){
 	
 	Gladiador_t gladiador1,gladiador2;
 	gladiador1.salud = 100;
 	gladiador2.salud = 100;
 	
-    printf("Introduzca el nombre del primer gladiador (10char): ");
-    scanf("%10s", gladiador1.nombre); 
+	printf("Introduzca los datos para empezar: gladiador1, fuerza1, arma1, gladiador2, fuerza2, arma2 -> ");
+    scanf("%s %d %s %s %d %s", gladiador1.nombre, &gladiador1.fuerza, gladiador1.arma, gladiador2.nombre, &gladiador2.fuerza, gladiador2.arma); 
+	
+	//--------------NOMBRE GLD1------------------------------
 	
 	if (strlen(gladiador1.nombre) > 9) {
         printf("ERROR: El nombre del gladiador 1 excede el tamanio permitido\n");
         return 1;
     }
-
-    printf("Introduzca el nombre del segundo gladiador (10char): ");
-    scanf("%10s", gladiador2.nombre);  
+	if(check_is_validName(gladiador1.nombre)){
+		return 1;
+	}
+	
+	//--------------ARMA GLD1------------------------------
+	
+	if (strlen(gladiador1.arma) > 10) {
+        printf("ERROR: El arma de %s excede el tamano permitido\n", gladiador1.nombre);
+        return 1;
+    }
+	
+	if(check_is_validName(gladiador1.arma)){
+		return 1;
+	}
+	
+	//--------------NOMBRE GLD2------------------------------
 	
 	if (strlen(gladiador2.nombre) > 9) {
         printf("ERROR: El nombre del gladiador 2 excede el tamanio permitido\n");
         return 1;
     }
 	
-	//-----------------------------------------------------------------------------
+	if(check_is_validName(gladiador2.nombre)){
+		return 1;
+	}
 	
-	//Controlar espacios
-	printf("Introduzca el nombre del arma de %s: ", gladiador1.nombre);
-    scanf("%s", gladiador1.arma);  
-
-    if (strlen(gladiador1.arma) > 10) {
-        printf("ERROR: El arma de %s excede el tamano permitido\n", gladiador1.nombre);
-        return 1;
-    }
-
-    printf("Introduzca el nombre del arma de %s: ", gladiador2.nombre);
-    scanf("%s", gladiador2.arma);  
-
-    if (strlen(gladiador2.arma) > 10) {
+	//--------------ARMA GLD2------------------------------
+	
+	if (strlen(gladiador2.arma) > 10) {
         printf("ERROR: El arma de %s excede el tamano permitido\n", gladiador2.nombre);
         return 1;
-    }		
+    }
 	
-	
-	//-----------------------------------------------------------------------------------
-	
-	//Controlar introducción de letras y caracteres vacíos
-	
-	printf("Introduzca la fuerza de %s: ", gladiador1.nombre);
-    scanf("%d", &gladiador1.fuerza);  
+	if(check_is_validName(gladiador2.arma)){
+		return 1;
+	}
 
-    printf("Introduzca la fuerza de %s: ", gladiador2.nombre);
-    scanf("%d", &gladiador2.fuerza);  
+	//----------------FUERZA GLD1 GLD2------------------------------
 	
-	printf("Los gladiadores elegidos son: %s y %s, utilizan %s y %s como armas, tienen una fuerza de %d y %d y una salud de %d y %d", 
+	//Mirar como hacer para que no sean palabras
+    if (gladiador1.fuerza <= 0 || gladiador2.fuerza <= 0) {
+		printf("ERROR: La fuerza introducida no es un numero, introduzca un numero valido\n", gladiador1.nombre, gladiador2.nombre);
+		return 1;
+	}
+	
+
+	
+	printf("Los gladiadores elegidos son: %s y %s, utilizan %s y %s como armas, tienen una fuerza de %d y %d y una salud de %d y %d puntos de vida", 
 	gladiador1.nombre, gladiador2.nombre, gladiador1.arma, gladiador2.arma, gladiador1.fuerza, gladiador2.fuerza, gladiador1.salud, gladiador2.salud);
 	
 	return 0;
