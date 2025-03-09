@@ -32,6 +32,7 @@ Al finalizar la batalla, el programa deberá mostrar el resultado y mostrar los 
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 typedef struct {
 	
@@ -60,12 +61,22 @@ int check_is_validName(char * palabra){
 	return 0;
 }
 
+int attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2); 
+int attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2){
+	
+	gladiador2->salud = gladiador2->salud - gladiador1->fuerza;
+	printf("%s le quita %d puntos de vida a %s, vida restante %d \n", gladiador1->nombre, gladiador1->fuerza, gladiador2->nombre, gladiador2->salud, gladiador2->salud);	
+	return 0;
+}
+
 
 int main(int argc, char * argv[]){
 	
 	Gladiador_t gladiador1,gladiador2;
 	gladiador1.salud = 100;
 	gladiador2.salud = 100;
+	int opcionUsuario = 0;
+	bool programFinal = false;
 	
 	printf("Introduzca los datos para empezar: gladiador1, fuerza1, arma1, gladiador2, fuerza2, arma2 -> ");
     scanf("%s %d %s %s %d %s", gladiador1.nombre, &gladiador1.fuerza, gladiador1.arma, gladiador2.nombre, &gladiador2.fuerza, gladiador2.arma); 
@@ -121,10 +132,46 @@ int main(int argc, char * argv[]){
 		return 1;
 	}
 	
-
 	
-	printf("Los gladiadores elegidos son: %s y %s, utilizan %s y %s como armas, tienen una fuerza de %d y %d y una salud de %d y %d puntos de vida", 
-	gladiador1.nombre, gladiador2.nombre, gladiador1.arma, gladiador2.arma, gladiador1.fuerza, gladiador2.fuerza, gladiador1.salud, gladiador2.salud);
+	/*
+
+	Deberá haber dos tipos de arma:
+	• Espada: el ataque será la fuerza del gladiador.
+	• Lanza: en este caso será el doble de la fuerza del gladiador.
+	*/
+	
+	printf("--------Comienza la batalla--------\n");
+	
+	while(!programFinal){
+		
+		printf("--------Turno de %s--------\n", gladiador1.nombre);
+		printf("1. Atacar\n");
+		printf("2. Defender\n");
+		printf("Selecciona una opcion: ");
+		
+		if(scanf("%d", &opcionUsuario) == 1){ //entrada del usuario (solo 1 num)
+			
+			if(opcionUsuario == 1 || opcionUsuario == 2){
+				
+				if(opcionUsuario == 1){
+					attack(&gladiador1, &gladiador2);
+				}else {
+					printf("%s se defiende y no le afecta el golpe de %s!", gladiador1.nombre, gladiador2.nombre);
+				}
+			}
+			
+			if(gladiador2.salud == 0){
+				printf("La salud de %s es %d, %s gana la batalla!!!!\n", gladiador2.nombre, gladiador2.salud, gladiador1.nombre);
+				programFinal = true;
+			}
+				
+		}else{
+			printf("Por favor, introduzca un numero valido (1 o 2): \n");
+			while (getchar() != '\n'); //Limpia el buffer 
+		}
+	}
+	
+	printf("Fin de la batalla, gracias por acudir al coliseo \n");
 	
 	return 0;
 }
