@@ -45,12 +45,13 @@ typedef struct {
 	
 } Gladiador_t;
 
-typedef enum {
-	ESPADA,
-	LANZA
-} Weapon_e;
-
 int check_is_validName(char * palabra); 
+int cpu_attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2);
+int attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2); 
+int defense(Gladiador_t * gladiador1, Gladiador_t * gladiador2); 
+void check_weapon(Gladiador_t * gladiador1, Gladiador_t * gladiador2);
+
+
 
 int check_is_validName(char * palabra){
 	
@@ -64,8 +65,6 @@ int check_is_validName(char * palabra){
 }
 
 
-
-int cpu_attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2);
 int cpu_attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2){
 	srand(time(NULL)); //Genera nums aleatorios
 	int random_value = rand() % 2 + 1;
@@ -81,15 +80,39 @@ int cpu_attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2){
 	return 0;
 }
 
-int attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2); 
 int attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2){
 	
 	gladiador2->salud = gladiador2->salud - gladiador1->fuerza;
+	printf("--------------------------------------------------------------------\n");
 	printf("%s le quita %d puntos de vida a %s, vida restante %d \n", gladiador1->nombre, gladiador1->fuerza, gladiador2->nombre, gladiador2->salud, gladiador2->salud);	
 	
-	cpu_attack(gladiador1, gladiador2);
 	return 0;
 }
+
+int defense(Gladiador_t * gladiador1, Gladiador_t * gladiador2){
+	printf("%s se defiende y no le afecta el golpe de %s!\n", gladiador1->nombre, gladiador2->nombre);
+	return 0;
+}
+
+//Llamar esta funcion en vez de attack
+void check_weapon(Gladiador_t *gladiador1, Gladiador_t *gladiador2) { //Revisar 0 fuerza -40 daño
+	
+    static int flagFuerza1 = 0;  
+    static int flagFuerza2 = 0;
+
+    if (strcmp(gladiador1->arma, "lanza") == 0 && !flagFuerza1) {
+        gladiador1->fuerza *= 2;
+        flagFuerza1 = 1;  
+    }
+    if (strcmp(gladiador2->arma, "lanza") == 0 && !flagFuerza2) {
+        gladiador2->fuerza *= 2;
+        flagFuerza2 = 1;  
+    }
+
+    attack(gladiador1, gladiador2);
+    cpu_attack(gladiador1, gladiador2);
+}
+
 
 
 int main(int argc, char * argv[]){
@@ -176,20 +199,20 @@ int main(int argc, char * argv[]){
 			if(opcionUsuario == 1 || opcionUsuario == 2){
 				
 				if(opcionUsuario == 1){
-					attack(&gladiador1, &gladiador2);
+					check_weapon(&gladiador1, &gladiador2);
 				}else {
-					printf("%s se defiende y no le afecta el golpe de %s!\n", gladiador1.nombre, gladiador2.nombre);
+					defense(&gladiador1, &gladiador2);
 				}
 				
 				if (gladiador2.salud == 0) { 
 					printf("La salud de %s es %d, %s gana la batalla!!!!\n", gladiador2.nombre, gladiador2.salud, gladiador1.nombre);
-					programFinal = true;  // El juego ha terminado
+					programFinal = true;  
 				} else if (gladiador1.salud == 0 && gladiador2.salud == 0) {
 					printf("La salud de %s es %d y la de %s es %d, empate!!!!\n", gladiador1.nombre, gladiador1.salud, gladiador2.nombre, gladiador2.salud);
-					programFinal = true;  // El juego ha terminado
+					programFinal = true;  
 				} else if (gladiador1.salud == 0) {
 					printf("La salud de %s es %d, %s gana la batalla!!!!\n", gladiador1.nombre, gladiador1.salud, gladiador2.nombre);
-					programFinal = true;  // El juego ha terminado
+					programFinal = true;  
 				}
 			}
 				
@@ -198,8 +221,6 @@ int main(int argc, char * argv[]){
 			while (getchar() != '\n'); //Limpia el buffer 
 		}
 	}
-	
-	printf("Fin de la batalla, gracias por acudir al coliseo \n");
-	
+		
 	return 0;
 }
