@@ -159,7 +159,7 @@ int main(int argc, char * argv[]){
 	
 	//--------------NOMBRE GLD1------------------------------
 	
-	if (strlen(gladiador1.nombre) > 9) {
+	if (strlen(gladiador1.nombre) > 9) { //Controlar largo de palabra
         printf("ERROR: El nombre del gladiador 1 excede el tamanio permitido\n");
         return 1;
     }
@@ -237,16 +237,17 @@ int main(int argc, char * argv[]){
 					defense(&gladiador1, &gladiador2);
 				}
 				
-				if (gladiador2.salud == 0) { 
-					printf("La salud de %s es %d, %s gana la batalla!!!!\n", gladiador2.nombre, gladiador2.salud, gladiador1.nombre);
-					programFinal = true;  
-				} else if (gladiador1.salud == 0 && gladiador2.salud == 0) {
+				if (gladiador1.salud == 0 && gladiador2.salud == 0) {
 					printf("La salud de %s es %d y la de %s es %d, empate!!!!\n", gladiador1.nombre, gladiador1.salud, gladiador2.nombre, gladiador2.salud);
 					programFinal = true;  
-				} else if (gladiador1.salud == 0) {
+				}else if (gladiador2.salud == 0) { 
+					printf("La salud de %s es %d, %s gana la batalla!!!!\n", gladiador2.nombre, gladiador2.salud, gladiador1.nombre);
+					programFinal = true;  
+				}else if (gladiador1.salud == 0) {
 					printf("La salud de %s es %d, %s gana la batalla!!!!\n", gladiador1.nombre, gladiador1.salud, gladiador2.nombre);
 					programFinal = true;  
 				}
+				
 			}else{
 				printf("Por favor, introduzca un numero valido (1 o 2): \n");
 				while (getchar() != '\n'); 
