@@ -73,23 +73,28 @@ int cpu_attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2){
 	int random_value = rand() % 2 + 1;
 	
 	if(random_value == 1){
-		if(flagDefense == false){
+		if(flagDefense){
+			
+			printf("--------------------------------------------------------------------\n");
+			printf("%s ha lanzado un ataque, pero %s lo ha bloqueado! \n", gladiador2->nombre, gladiador1->nombre);	
+			printf("--------------------------------------------------------------------\n");
+	
+		}else{
 			gladiador1->salud = gladiador1->salud - gladiador2->fuerza;
 			if(gladiador1->salud < 0){
 				gladiador1->salud = 0;
 			}
 			printf("--------------------------------------------------------------------\n");
-			printf("%s le quita %d puntos de vida a %s, vida restante %d \n", gladiador2->nombre, gladiador2->fuerza, gladiador1->nombre, gladiador1->salud);	
-			//REVISAR POR QUE CUANDO SE DEFIENDE EL GOLPE DEL OTRO GLADIADOR SIGUE VALIENDO
-		}else{
+			printf("%s le quita %d puntos de vida a %s, vida restante %d \n", gladiador2->nombre, gladiador2->fuerza, gladiador1->nombre, gladiador1->salud);
 			printf("--------------------------------------------------------------------\n");
-			printf("%s ha lanzado un ataque, pero %s lo ha bloqueado! \n", gladiador2->nombre, gladiador1->nombre);	
 		}
 		
 		flagDefense = false;
 		
 	}else{
+		printf("--------------------------------------------------------------------\n");
 		printf("%s ha decidido no atacar \n", gladiador2->nombre);	
+		printf("--------------------------------------------------------------------\n");
 	}
 	
 	return 0;
@@ -103,31 +108,38 @@ int attack(Gladiador_t * gladiador1, Gladiador_t * gladiador2){
 	}
 	printf("--------------------------------------------------------------------\n");
 	printf("%s le quita %d puntos de vida a %s, vida restante %d \n", gladiador1->nombre, gladiador1->fuerza, gladiador2->nombre, gladiador2->salud, gladiador2->salud);	
+	printf("--------------------------------------------------------------------\n");
+
 	
 	return 0;
 }
 
 int defense(Gladiador_t * gladiador1, Gladiador_t * gladiador2){
+	
+	printf("--------------------------------------------------------------------\n");
 	printf("%s se defiende y no le afecta el golpe de %s!\n", gladiador1->nombre, gladiador2->nombre);
+	printf("--------------------------------------------------------------------\n");
+	
 	flagDefense = true;
 	cpu_attack(gladiador1, gladiador2);
 	return 0;
 }
 
-void check_weapon(Gladiador_t *gladiador1, Gladiador_t *gladiador2) { //Revisar 0 fuerza -40 daño
-	
+void check_weapon(Gladiador_t *gladiador1, Gladiador_t *gladiador2) { 
+
     static int flagFuerza1 = 0;  
     static int flagFuerza2 = 0;
 
-    if (strcmp(gladiador1->arma, "lanza") == 0 && !flagFuerza1) {
+    if (strcmp(gladiador1->arma, "lanza") == 0 && !flagFuerza1) { //Compara los strings con stringcompare 
         gladiador1->fuerza *= 2;
-        flagFuerza1 = 1;  
+        flagFuerza1 = 1; 
     }
     if (strcmp(gladiador2->arma, "lanza") == 0 && !flagFuerza2) {
         gladiador2->fuerza *= 2;
         flagFuerza2 = 1;  
     }
 
+    // Realizar los ataques
     attack(gladiador1, gladiador2);
     cpu_attack(gladiador1, gladiador2);
 }
@@ -166,6 +178,11 @@ int main(int argc, char * argv[]){
 		return 1;
 	}
 	
+	if (strcmp(gladiador1.arma, "lanza") != 0 && strcmp(gladiador1.arma, "espada") != 0) {
+		printf("ERROR: El arma de %s no es valida. Debe ser 'espada' o 'lanza'.\n", gladiador1.nombre);
+		return 1;
+	}
+	
 	//--------------NOMBRE GLD2------------------------------
 	
 	if (strlen(gladiador2.nombre) > 9) {
@@ -180,22 +197,25 @@ int main(int argc, char * argv[]){
 	//--------------ARMA GLD2------------------------------
 	
 	if (strlen(gladiador2.arma) > 10) {
-        printf("ERROR: El arma de %s excede el tamano permitido\n", gladiador2.nombre);
-        return 1;
-    }
-	
-	if(check_is_validName(gladiador2.arma)){
+		printf("ERROR: El arma de %s excede el tamaño permitido\n", gladiador2.nombre);
+		return 1;
+	}
+
+	if (check_is_validName(gladiador2.arma)) {
+		return 1;
+	}
+
+	if (strcmp(gladiador2.arma, "lanza") != 0 && strcmp(gladiador2.arma, "espada") != 0) {
+		printf("ERROR: El arma de %s no es valida. Debe ser 'espada' o 'lanza'.\n", gladiador2.nombre);
 		return 1;
 	}
 
 	//----------------FUERZA GLD1 GLD2------------------------------
 	
-	//Mirar como hacer para que no sean palabras
     if (gladiador1.fuerza <= 0 || gladiador2.fuerza <= 0) {
 		printf("ERROR: La fuerza introducida no es un numero, introduzca un numero valido\n", gladiador1.nombre, gladiador2.nombre);
 		return 1;
 	}
-	
 	
 	
 	printf("--------Comienza la batalla--------\n");
@@ -227,6 +247,9 @@ int main(int argc, char * argv[]){
 					printf("La salud de %s es %d, %s gana la batalla!!!!\n", gladiador1.nombre, gladiador1.salud, gladiador2.nombre);
 					programFinal = true;  
 				}
+			}else{
+				printf("Por favor, introduzca un numero valido (1 o 2): \n");
+				while (getchar() != '\n'); 
 			}
 				
 		}else{
